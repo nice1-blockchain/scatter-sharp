@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cryptography.ECDSA.Secp256K1" Version="1.1.2" />
+    <PackageReference Include="Cryptography.ECDSA.Secp256K1" Version="1.1.3" />
     <PackageReference Include="Json.NET.Aot" Version="9.0.1" />
   </ItemGroup>
 
@@ -16,12 +16,10 @@
 
   <ItemGroup>
     <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
-	  <HintPath>C:\Program Files\Unity\Hub\Editor\2019.1.12f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>F:\Programas\Unity\2019.4.23f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
-	  <HintPath>C:\Program Files\Unity\Hub\Editor\2019.1.12f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>F:\Programas\Unity\2019.4.23f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 
