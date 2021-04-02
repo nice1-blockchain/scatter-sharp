@@ -1,4 +1,4 @@
-# This library is not actively maintained
+# This library is maintained by Nice1
 
 # scatter-sharp
 Scatter C# library to interact with ScatterDesktop / ScatterMobile
@@ -6,7 +6,7 @@ Scatter C# library to interact with ScatterDesktop / ScatterMobile
 ## Clone repo
 
 ```
-git clone https://github.com/GetScatter/scatter-sharp --recursive
+git clone https://github.com/nice1-blockchain/scatter-sharp --recursive
 ```
 
 ### Prerequisite to build
@@ -16,7 +16,7 @@ Visual Studio 2017+
 ### Instalation
 scatter-sharp is now available throught nuget https://www.nuget.org/packages/scatter-sharp
 ```
-Install-Package scatter-sharp
+Install-Package scatter-sharp -> new version 2.1.3
 ```
 
 ### Usage
