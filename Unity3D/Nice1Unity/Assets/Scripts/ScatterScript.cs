@@ -20,7 +20,7 @@ using Network = ScatterSharp.Core.Api.Network;
 /// The test scatter script.
 /// </summary>
 
-public class TestScatterScript : MonoBehaviour
+public class ScatterScript : MonoBehaviour
 {
     [SerializeField] Text textUIDebug;
 
