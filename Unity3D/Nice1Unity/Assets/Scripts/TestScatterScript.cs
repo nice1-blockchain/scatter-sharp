@@ -13,9 +13,20 @@ using UnityEngine;
 using EosSharp.Core.Api.v1;
 using EosSharp.Core.Exceptions;
 using System.Threading.Tasks;
+using UnityEngine.UI;
+using Network = ScatterSharp.Core.Api.Network;
+
+/// <summary>
+/// The test scatter script.
+/// </summary>
 
 public class TestScatterScript : MonoBehaviour
 {
+    [SerializeField] Text textUIDebug;
+
+    /// <summary>
+    /// Pushes the transaction.
+    /// </summary>
     public async void PushTransaction()
     {
         try
@@ -80,6 +91,18 @@ public class TestScatterScript : MonoBehaviour
                 }
                 });
                 print(result);
+                textUIDebug.text = "Transaction: " + result + "\n";
+
+                /*GetTransactionResponse resultGetTransaction = await eos.GetTransaction(result);
+                textUIDebug.text = "---------------------------\n" +
+                    "Id: " + resultGetTransaction.id + "\n" +
+                    "DateTime:  " + resultGetTransaction.block_time + "\n" +
+                    "DetailedTransaction-> Transaction Receipt -> cpu usage " + resultGetTransaction.trx.receipt.cpu_usage_us + "\n" +
+                    "block_num: " + resultGetTransaction.block_num + "\n" +
+                    "last_irreversible_block: " + resultGetTransaction.last_irreversible_block;*/
+     
+                
+
             }
         }
         catch (ApiErrorException ex)
@@ -96,13 +119,21 @@ public class TestScatterScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Tests the all unit tests.
+    /// </summary>
     public async void TestAllUnitTests()
     {
         var scatterUnitTests = new ScatterUnitTests(this);
         await scatterUnitTests.TestAll();
+        textUIDebug.text = " TestAllUnitTests ";
     }
 
-    public async Task<IdentityAccount> GetAccount()
+    /// <summary>
+    /// Gets the account.
+    /// </summary>
+    /// <returns>A Task.</returns>
+    public async void GetAccount()
     {
         try
         {
@@ -143,23 +174,51 @@ public class TestScatterScript : MonoBehaviour
 
                 var account = scatter.Identity.accounts.First();
 
-                return account;
+                // DEBUG 
+                Debug.Log("Identity\n");
+                print(scatter.Identity.hash);
+                print(scatter.Identity.publicKey);
+                print(scatter.Identity.name);
+                print(scatter.Identity.kyc);
+
+                Debug.Log("Account\n");
+                print(account.name);
+                print(account.authority);
+                print(account.publicKey);
+                print(account.blockchain);
+                print(account.isHardware);
+                print(account.chainId);
+
+                // TEXT
+                textUIDebug.text = "Identity \n" +
+                    "Hash: " + scatter.Identity.hash + " \n" +
+                    "PublicKey: " + scatter.Identity.publicKey + " \n" +
+                    "Name: " + scatter.Identity.name + " \n" +
+                    "KYC: " + scatter.Identity.kyc + " \n" +
+                    " ----------------------------------- \n" +
+                    "Account \n" +
+                    "Name: " + account.name + " \n" +
+                    "Authority: " + account.authority + " \n" +
+                    "PublicKey: " + account.publicKey + " \n" +
+                    "Blockchain: " + account.blockchain + "\n" +
+                    "isHardware: " + account.isHardware + "\n" +
+                    "chainId: " + account.chainId + "\n";
             }
         }
         catch (ApiErrorException ex)
         {
             print(JsonConvert.SerializeObject(ex.error));
-            return null;
+            
         }
         catch (ApiException ex)
         {
             print(ex.Content);
-            return null;
+           
         }
         catch (Exception ex)
         {
             print(JsonConvert.SerializeObject(ex));
-            return null;
+           
         }
     }
 
