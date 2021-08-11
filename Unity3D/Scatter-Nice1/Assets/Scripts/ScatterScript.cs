@@ -15,6 +15,8 @@ using EosSharp.Core.Exceptions;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using Network = ScatterSharp.Core.Api.Network;
+using UnityEngine.Networking;
+using System.Collections;
 
 /// <summary>
 /// The test scatter script.
@@ -23,6 +25,8 @@ using Network = ScatterSharp.Core.Api.Network;
 public class ScatterScript : MonoBehaviour
 {
     [SerializeField] Text textUIDebug;
+
+    private Scatter scatterGlobal;
 
     /// <summary>
     /// Pushes the transaction.
@@ -174,6 +178,8 @@ public class ScatterScript : MonoBehaviour
 
                 var account = scatter.Identity.accounts.First();
 
+                scatterGlobal = scatter;
+
                 // DEBUG 
                 Debug.Log("Identity\n");
                 print(scatter.Identity.hash);
@@ -203,6 +209,8 @@ public class ScatterScript : MonoBehaviour
                     "Blockchain: " + account.blockchain + "\n" +
                     "isHardware: " + account.isHardware + "\n" +
                     "chainId: " + account.chainId + "\n";
+
+               
             }
         }
         catch (ApiErrorException ex)
@@ -219,6 +227,83 @@ public class ScatterScript : MonoBehaviour
         {
             print(JsonConvert.SerializeObject(ex));
            
+        }
+    }
+
+    /// <summary>
+    /// Tests the search assets by author.
+    /// </summary>
+    public void TestSearchAssetsByAuthor()
+    {
+        // Test Get Information from account
+        SearchAssetsByAuthor(scatterGlobal.Identity.accounts.First().name);
+    }
+
+    /// <summary>
+    /// Tests the search assets by owner.
+    /// </summary>
+    public void TestSearchAssetsByOwner()
+    {
+        // Test Get Information from account
+        SearchAssetsByAuthor(scatterGlobal.Identity.accounts.First().name);
+    }
+
+
+    /// <summary>
+    /// Searches the assets by author.
+    /// </summary>
+    private void SearchAssetsByAuthor(string author)
+    {
+        // https://jungle3.api.simpleassets.io/doc/
+        string url = "https://jungle3.api.simpleassets.io/v1/assets/search?author=" + author + "&page=1&limit=1000&sortField=assetId&sortOrder=asc";
+
+        StartCoroutine( GetRequest(url) );
+
+    }
+
+    /// <summary>
+    /// Searches the assets by owner.
+    /// </summary>
+    /// <param name="owner">The owner.</param>
+    private void SearchAssetsByOwner(string owner)
+    {
+        // https://jungle3.api.simpleassets.io/doc/
+        string url = "https://jungle3.api.simpleassets.io/v1/assets/search?owner=" + owner + "&page=1&limit=1000&sortField=assetId&sortOrder=asc";
+
+        StartCoroutine( GetRequest(url ));
+
+    }
+
+    /// <summary>
+    /// Gets the request.
+    /// </summary>
+    /// <param name="uri">The uri.</param>
+    /// <returns>An IEnumerator.</returns>
+    IEnumerator GetRequest(string uri)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        {
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+
+            string[] pages = uri.Split('/');
+            int page = pages.Length - 1;
+
+            switch (webRequest.result)
+            {
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.DataProcessingError:
+                    Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                    break;
+                case UnityWebRequest.Result.ProtocolError:
+                    Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                    break;
+                case UnityWebRequest.Result.Success:
+                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
